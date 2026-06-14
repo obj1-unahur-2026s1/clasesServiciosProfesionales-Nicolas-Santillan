@@ -1,0 +1,30 @@
+import profesionales.*
+
+describe "Test empresa de servicios" {
+    const unsam = new Universidad(provincia="Buenos Aires", honorariosRecomendados=3500)
+    const unro = new Universidad(provincia="Rosario", honorariosRecomendados=2800)
+    const unco = new Universidad(provincia="Corrientes", honorariosRecomendados=4200)
+    const unahur = new Universidad(provincia="Buenos Aires", honorariosRecomendados=8800)
+    const juana = new ProfesionalVinculado(universidad=unro)
+    const melina = new ProfesionalAsociado(universidad=unco)
+    const rocio = new ProfesionalLibre(universidad=unahur,honorario=5000)
+    const luciana = new ProfesionalLibre(universidad=unro, honorario=3200)
+    const empresa = new Empresa(profesionales=[juana, melina, rocio, luciana], honorarioReferencia=3500)
+  test "Dos de sus profesionales estudiaron en Rosario, uno en Hurlingham y ninguno en San Martin" {
+    assert.equals(2, empresa.profesionalesQueEstudiaronEn(unro))
+    assert.equals(1, empresa.profesionalesQueEstudiaronEn(unahur))
+    assert.equals(0, empresa.profesionalesQueEstudiaronEn(unsam))
+  }
+
+  test "Rocio es la unica profesional cara" {
+    assert.equals([rocio], empresa.profesionalesCaros())
+  }
+
+  test "Las universidades formadoras son las de rosario, corrientes y hurlingham" {
+    assert.equals(#{unro, unco, unahur}, empresa.universidadesFormadoras())
+  }
+
+  test "Juana es la profesional mas barata" {
+    assert.equals(juana, empresa.profesionalMasBarato())
+  }
+}
